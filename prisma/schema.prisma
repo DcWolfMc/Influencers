@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Influencer {
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  instagram_name       String
+  followers            Int
+  following            Int
+  email                String
+  image                String
+  address              String
+  categories           Category[]             @relation("InfluencerCategories")
+  brands               Brand[]                @relation("InfluencerBrands")
+  InfluencerCategories InfluencerCategories[]
+  InfluencerBrands     InfluencerBrands[]
+}
+
+model Category {
+  id                   Int                    @id @default(autoincrement())
+  name                 String
+  influencers          Influencer[]           @relation("InfluencerCategories")
+  InfluencerCategories InfluencerCategories[]
+}
+
+model Brand {
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String
+  niche            String
+  influencers      Influencer[]       @relation("InfluencerBrands")
+  InfluencerBrands InfluencerBrands[]
+}
+
+//nome, nicho, alcance, foto, username do Instagram, endereço
+
+model InfluencerCategories {
+  influencerId Int
+  categoryId   Int
+
+  influencer Influencer @relation(fields: [influencerId], references: [id], onDelete: Cascade)
+  category   Category   @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([influencerId, categoryId])
+}
+
+model InfluencerBrands {
+  influencerId Int
+  brandId      Int
+
+  influencer Influencer @relation(fields: [influencerId], references: [id], onDelete: Cascade)
+  brand      Brand      @relation(fields: [brandId], references: [id], onDelete: Cascade)
+
+  @@id([influencerId, brandId])
+}
+
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  password     String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  refreshToken RefreshToken?
+
+  @@unique([id, email, name])
+}
+
+model RefreshToken {
+  token          String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  expirationDate DateTime
+  userId         Int      @unique
+  user           User     @relation(fields: [userId], references: [id])
+}
