@@ -1,0 +1,13 @@
+version: '3.8'
+services:
+  influencers-backend:
+    build: .
+    container_name: influencers-backend
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - ./db:/db
+    env_file:
+      - .env
