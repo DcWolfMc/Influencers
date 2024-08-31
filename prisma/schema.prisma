@@ -30,14 +30,14 @@ model Influencer {
 
 model Category {
   id                   Int                    @id @default(autoincrement())
-  name                 String
+  name                 String                 @unique
   influencers          Influencer[]           @relation("InfluencerCategories")
   InfluencerCategories InfluencerCategories[]
 }
 
 model Brand {
   id               Int                @id @default(autoincrement())
-  name             String
+  name             String             @unique
   description      String
   niche            String
   influencers      Influencer[]       @relation("InfluencerBrands")
