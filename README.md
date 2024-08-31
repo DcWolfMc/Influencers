@@ -71,3 +71,16 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+## Auth service possible upgrades
+
+Geração de Access Token: Além do ID do usuário, considere adicionar outros claims ao access token, como roles ou permissões, para facilitar o controle de acesso sem precisar consultar o banco de dados a cada requisição.
+
+Monitoramento de Tentativas de Login: Implemente um sistema para monitorar tentativas de login e bloquear o usuário temporariamente após várias tentativas falhas. Isso pode ajudar a proteger contra ataques de força bruta.
+
+Expiração do Refresh Token: Avalie a necessidade de uma expiração mais curta para o refresh token ou uma estratégia de rotação para aumentar a segurança.Geração de Access Token: Além do ID do usuário, considere adicionar outros claims ao access token, como roles ou permissões, para facilitar o controle de acesso sem precisar consultar o banco de dados a cada requisição.
+
+Monitoramento de Tentativas de Login: Implemente um sistema para monitorar tentativas de login e bloquear o usuário temporariamente após várias tentativas falhas. Isso pode ajudar a proteger contra ataques de força bruta.
+
+Expiração do Refresh Token: Avalie a necessidade de uma expiração mais curta para o refresh token ou uma estratégia de rotação para aumentar a segurança.
