@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
 import { envSchema } from './env';
 import { InfluencersModule } from './influencers/influencers.module';
+import { UsersModule } from './users/users.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -17,6 +18,7 @@ import { InfluencersModule } from './influencers/influencers.module';
       isGlobal: true,
     }),
     InfluencersModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],
