@@ -9,6 +9,7 @@ import { ConfigModule } from '@nestjs/config';
 import { envSchema } from './env';
 import { InfluencersModule } from './influencers/influencers.module';
 import { UsersModule } from './users/users.module';
+import { BrandsModule } from './brands/brands.module';
 @Module({
   imports: [
     DatabaseModule,
@@ -19,6 +20,7 @@ import { UsersModule } from './users/users.module';
     }),
     InfluencersModule,
     UsersModule,
+    BrandsModule,
   ],
   controllers: [AppController],
   providers: [AppService, { provide: APP_GUARD, useClass: ThrottlerGuard }],

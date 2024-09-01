@@ -4,7 +4,8 @@ import { InfluencersService } from './influencers.service';
 import { DatabaseModule } from 'src/database/database.module';
 
 @Module({
-  controllers: [DatabaseModule, InfluencersController],
-  providers: [InfluencersService]
+  imports: [DatabaseModule],
+  controllers: [InfluencersController],
+  providers: [InfluencersService],
 })
 export class InfluencersModule {}
