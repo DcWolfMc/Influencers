@@ -11,10 +11,7 @@ export class InfluencersService {
   constructor(private readonly databaseService: DatabaseService) {}
 
   async create(
-    influencerDto: CreateInfluencersDto & {
-      categories: string[];
-      brands: string[];
-    },
+    influencerDto: CreateInfluencersDto
   ) {
     const { categories, brands, ...influencerData } = influencerDto;
 
@@ -76,10 +73,7 @@ export class InfluencersService {
   }
   async updateOne(
     id: number,
-    influencer: UpdateInfluencersDto & {
-      categories: string[];
-      brands: string[];
-    },
+    influencer: UpdateInfluencersDto
   ) {
     const { categories, brands, ...rest } = influencer;
 
