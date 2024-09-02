@@ -11,7 +11,7 @@
 }
 
 body {
-  @apply text-slate-100 bg-slate-700 antialiased;
+  @apply text-slate-100 bg-slate-800 antialiased;
 }
 
 body,
