@@ -41,3 +41,9 @@ export interface GetAllInfluencersData {
   totalCount: number;
   totalPages: number;
 }
+export interface GetAllInfluencersRequest {
+  categories?: string;
+  brands?: string;
+  page?: string;
+  pageSize?: string;
+}
