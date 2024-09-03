@@ -15,12 +15,12 @@ export class GetInfluencersDto {
   @IsOptional()
   @IsInt()
   @Min(1)
-  @Transform(({ value }) => parseInt(value, 10))
+  @Transform(({ value }) => Number.isInteger(Number(value)) ? Number(value) : 1)
   page?: number = 1;
 
   @IsOptional()
   @IsInt()
   @Min(1)
-  @Transform(({ value }) => parseInt(value, 10))
+  @Transform(({ value }) => Number.isInteger(Number(value)) ? Number(value) : 1)
   pageSize?: number = 10;
 }

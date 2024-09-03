@@ -28,7 +28,7 @@ export class InfluencersController {
   }
 
   @Get()
-  findAll(@Query() query: GetInfluencersDto) {
+  findAll(@Query(ValidationPipe) query: GetInfluencersDto) {
     return this.influencersService.findAll(query);
   }
 
