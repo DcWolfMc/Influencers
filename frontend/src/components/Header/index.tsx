@@ -21,8 +21,8 @@ export const Header = () => {
             to={route.path}
             className={`${
               location.pathname === route.path
-                ? " border-b-4 border-customAmber font-bold"
-                : "border-b-4 border-transparent hover:border-customAmber font-bold"
+                ? " border-b-4 border-orange-500 font-bold"
+                : "border-b-4 border-transparent hover:border-orange-500 font-bold"
             }`}
           >
             {route.name}

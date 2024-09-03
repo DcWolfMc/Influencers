@@ -48,8 +48,31 @@ export class InfluencersService {
 
   async findAll(query: GetInfluencersDto) {
     const { categories, brands, page = 1, pageSize = 10 } = query;
-
-    return await this.databaseService.influencer.findMany({
+    const skip = Number.isInteger(Number(page)) ? Number(page) : 1;
+    const take = Number.isInteger(Number(pageSize)) ? Number(pageSize) : 10;
+  
+    // Contar o total de influenciadores que atendem aos critérios da busca
+    const totalCount = await this.databaseService.influencer.count({
+      where: {
+        ...(categories?.length > 0 && {
+          categories: {
+            some: {
+              name: { in: categories },
+            },
+          },
+        }),
+        ...(brands?.length > 0 && {
+          brands: {
+            some: {
+              name: { in: brands },
+            },
+          },
+        }),
+      },
+    });
+  
+    // Obter a lista de influenciadores com base nos critérios da busca e paginação
+    const influencers = await this.databaseService.influencer.findMany({
       where: {
         ...(categories?.length > 0 && {
           categories: {
@@ -67,10 +90,20 @@ export class InfluencersService {
         }),
       },
       include: { categories: true, brands: true },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
+      skip: (skip - 1) * take,
+      take: take,
     });
+  
+    // Retornar o resultado com dados de paginação e a lista de influenciadores
+    return {
+      totalCount,
+      page: skip,
+      pageSize: take,
+      totalPages: Math.ceil(totalCount / take),
+      influencers,
+    };
   }
+  
   async updateOne(
     id: number,
     influencer: UpdateInfluencersDto

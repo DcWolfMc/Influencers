@@ -17,10 +17,10 @@ import type { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get() // GET /users or /users?role=value
   findAll(@Req() req: Request) {
     console.log('find All log', req.user);
@@ -34,7 +34,7 @@ export class UsersController {
 
   //:id most be declared after all possible users get calls
   //its a waterfall
-
+  @UseGuards(JwtAuthGuard)
   @Get(':id') // GET /users/:id
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findOne(id, {});
@@ -47,7 +47,7 @@ export class UsersController {
   ) {
     return this.userService.create(user);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Patch(':id') // PATCH /users/:id
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -56,12 +56,12 @@ export class UsersController {
   ) {
     return this.userService.update(id, userUpdate);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Delete(':id') // DELETE /users/:id
   delete(@Param('id', ParseIntPipe) id: number) {
     return this.userService.delete(id);
   }
-
+  @UseGuards(JwtAuthGuard)
   @Post(':id')
   findUserProfile(
     @Param('id', ParseIntPipe) id: number,

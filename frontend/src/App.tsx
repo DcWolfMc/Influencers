@@ -7,24 +7,29 @@ import { Influencers } from "./page/Influencers";
 import { InfluencerDetails } from "./page/InfluencerDetails";
 import { Brands } from "./page/Brands";
 import { BrandDetails } from "./page/BrandDetails";
+import { AuthProvider } from "./context/AuthContext";
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<AuthLayout />}>
-          <Route index element={<Login />} />
-          <Route path="/signUp" element={<SignUp />} />
-        </Route>
 
-        <Route path="/influencers" element={<MainLayout />}>
-          <Route index element={<Influencers />} />
-          <Route path="./:influencer" element={<InfluencerDetails />} />
-        </Route>
+          <Route path="/" element={<AuthLayout />}>
+            <Route index element={<Login />} />
+            <Route path="/signUp" element={<SignUp />} />
+          </Route>
 
-        <Route path="/brands" element={<MainLayout />}>
-          <Route index element={<Brands />} />
-          <Route path="./:brand" element={<BrandDetails />} />
-        </Route>
+          <AuthProvider>
+          <Route path="/influencers" element={<MainLayout />}>
+            <Route index element={<Influencers />} />
+            <Route path="./:influencer" element={<InfluencerDetails />} />
+          </Route>
+
+          <Route path="/brands" element={<MainLayout />}>
+            <Route index element={<Brands />} />
+            <Route path="./:brand" element={<BrandDetails />} />
+          </Route>
+        </AuthProvider>
+
       </Routes>
     </Router>
   );
