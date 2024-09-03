@@ -14,7 +14,7 @@ import { File, NotePencil, Trash } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { GetAllInfluencersData } from "@/@types/influencerData";
+import { GetAllInfluencersData } from "@/@types/influencerDataType";
 
 export const Influencers = () => {
   const { accessToken, loading } = useAuth();

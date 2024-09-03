@@ -1,6 +1,6 @@
 import axios from "axios";
 import { newUserData } from "@/@types/userData";
-import { GetAllInfluencersRequest, NewInfluencerData } from "@/@types/influencerData";
+import { GetAllInfluencersRequest, NewInfluencerData } from "@/@types/influencerDataType";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
