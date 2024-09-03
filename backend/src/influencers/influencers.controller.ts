@@ -10,6 +10,7 @@ import {
   Put,
   Query,
   Req,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { InfluencersService } from './influencers.service';
@@ -17,7 +18,9 @@ import { Prisma } from '@prisma/client';
 import { GetInfluencersDto } from './dto/get-influencers.dto';
 import { CreateInfluencersDto } from './dto/create-influencers.dto';
 import { UpdateInfluencersDto } from './dto/update-influencers.dto';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @Controller('influencers')
 export class InfluencersController {
   constructor(private readonly influencersService: InfluencersService) {}
