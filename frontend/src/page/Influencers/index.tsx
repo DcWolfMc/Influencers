@@ -1,4 +1,3 @@
-import { GetAllInfluencersData } from "@/@types/influencerData";
 import { IconButton } from "@/components/IconButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/Pagination";
@@ -14,35 +13,40 @@ import { getAllInfluencers } from "@/service/api";
 import { File, NotePencil, Trash } from "@phosphor-icons/react";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { GetAllInfluencersData } from "@/@types/influencerData";
 
 export const Influencers = () => {
+  const { accessToken, loading } = useAuth();
   const [searchParams] = useSearchParams();
   const currentLimit = searchParams.get("pageSize") || "10";
   const currentPage = searchParams.get("page") || "1";
   const [influencersData, setInfluencersData] = useState<GetAllInfluencersData>(
     { influencers: [], pageSize: 10, totalCount: 0, totalPages: 1 }
   );
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchData() {
-      setIsLoading(true);
-      try {
-        const response = await getAllInfluencers(
-          "",
-          "",
-          currentPage,
-          currentLimit
-        );
-        setInfluencersData(response.data);
-      } catch (error) {
-        console.error("Failed to fetch influencers", error);
-      } finally {
-        setIsLoading(false);
+      if (!loading) {
+        try {
+          const response = await getAllInfluencers(
+            {
+              brands: "",
+              categories: "",
+              page: currentPage,
+              pageSize: currentLimit,
+            },
+            accessToken ? accessToken : ""
+          );
+          setInfluencersData(response.data);
+        } catch (error) {
+          console.error("Failed to fetch influencers", error);
+        } finally {
+        }
       }
     }
     fetchData();
-  }, [currentPage, currentLimit]);
+  }, [currentPage, currentLimit, loading]);
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
       <section></section>
@@ -58,7 +62,7 @@ export const Influencers = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoading
+          {loading
             ? Array.from({ length: influencersData.pageSize }, (_, index) => (
                 <TableRow key={index}>
                   <TableCell className="p-0 pt-2" colSpan={6} width={"100%"}>

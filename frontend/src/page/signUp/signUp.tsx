@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import { signUp } from "@/service/api";
@@ -17,19 +17,18 @@ export const SignUp = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInput>();
-
+  const navigate = useNavigate();
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     setIsSubmitting(true);
     try {
-      console.log(data);
-      await signUp(data).then(response=>{
-        console.log("signUp response", response);
-        toast.success('Cadastro realizado com sucesso!');
+      await signUp(data).then(()=>{
+        toast.success('Cadastro realizado com sucesso! \n Redirecionando você para tela de login.',{onClose:()=>{
+          navigate('/')
+        }});
       }) // Simulate form submission
       // Implement your submission logic here (e.g., API call)
     } catch (error) {
       console.error("Submission error:", error);
-      toast.error('Ocorreu um erro ao realizar o cadastro.');
     } finally {
       setIsSubmitting(false);
     }

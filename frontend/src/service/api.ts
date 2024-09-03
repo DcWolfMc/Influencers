@@ -1,6 +1,6 @@
 import axios from "axios";
-import { NewInfluencerData } from "@/@types/influencerData";
 import { newUserData } from "@/@types/userData";
+import { GetAllInfluencersRequest, NewInfluencerData } from "@/@types/influencerData";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -8,10 +8,8 @@ export const api = axios.create({
 });
 //////////////////////////////    Influencers Routes   //////////////////////////////
 export const getAllInfluencers = async (
-  categories?: string,
-  brands?: string,
-  page: string = "1",
-  pageSize: string = "10"
+  { page = "1", pageSize = "10", brands, categories }: GetAllInfluencersRequest,
+  token: string
 ) => {
   const params = new URLSearchParams();
 
@@ -21,7 +19,7 @@ export const getAllInfluencers = async (
   params.append("pageSize", pageSize);
   console.log("params:", params);
 
-  return await api.get(`/influencers?${params.toString()}`);
+  return await api.get(`/influencers?${params.toString()}`, {headers: { Authorization: `Bearer ${token}` }});
 };
 
 export const getInfluencerById = async (id: string) => {
@@ -41,18 +39,20 @@ export const deleteInfluencerById = async (id: string) => {
 };
 //////////////////////////////    Auth Routes   //////////////////////////////
 
-export const signIn = async(data:{email:string, password:string})=>{
-  return await api.post('/auth',data)
-}
-export const refreshTokens = async(refreshToken:string)=>{
-  return await api.post('/refresh',{refreshToken})
-}
-export const signUp = async(data:newUserData)=>{
-  return await api.post('/users',data)
-}
-export const getUser = async(id:number, token:string)=>{
-  return await api.get(`/users/${id}`,{headers: { Authorization: `Bearer ${token}` }})
-}
+export const signIn = async (data: { email: string; password: string }) => {
+  return await api.post("/auth", data);
+};
+export const refreshTokens = async (refreshToken: string) => {
+  return await api.post("/auth/refresh", { refreshToken });
+};
+export const signUp = async (data: newUserData) => {
+  return await api.post("/users", data);
+};
+export const getUser = async (id: number, token: string) => {
+  return await api.get(`/users/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 
 //////////////////////////////    Categories Routes   //////////////////////////////
 

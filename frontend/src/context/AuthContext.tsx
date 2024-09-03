@@ -13,8 +13,9 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   userData: UserData | null;
   userId: number | null;
-  refrashToken: string | null;
+  refreshToken: string | null;
   accessToken: string | null;
+  loading: boolean;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -30,39 +31,51 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [refrashToken, setRefrashToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
-      const storedAccessToken = localStorage.getItem("accessToken");
-      const storedRefreshToken = localStorage.getItem("refreshToken");
-      const storedUserId = localStorage.getItem("userId");
+      
+      const storedAccessToken = await localStorage.getItem("accessToken");
+      const storedRefreshToken = await localStorage.getItem("refreshToken");
+      const storedUserId = await localStorage.getItem("userId");
+      
       if (storedAccessToken && storedRefreshToken && storedUserId) {
         try {
+          console.log("AuthContext useEffect near try");
           const response = await refreshTokens(storedRefreshToken);
           const newAccessToken = response.data.accessToken;
-          const newRefreshToken = response.data.refreshToken;
-          const newuserId = response.data.userId;
+          const newRefreshToken = response.data.refreshToken.token;
+          const newUserId = response.data.userId;
+
           localStorage.setItem("accessToken", newAccessToken);
           localStorage.setItem("refreshToken", newRefreshToken);
-          localStorage.setItem("userId", newuserId);
+          localStorage.setItem("userId", newUserId);
 
-          getUser(newuserId, newAccessToken).then((response) => {
-            console.log("getUserData:", response.data);
+          getUser(newUserId, newAccessToken).then((response) => {
             setUserData(response.data);
           });
 
           setAccessToken(newAccessToken);
-          setRefrashToken(newuserId);
+          setRefreshToken(newRefreshToken);
           setIsAuthenticated(true);
-          setUserId(Number(localStorage.getItem("userId")));
+          setUserId(Number(newUserId));
+          navigate("/influencers");
         } catch (refreshError) {
           console.log("refreshError", refreshError);
-
           logout();
         }
+      } else {
+        setIsAuthenticated(false);
+        setUserData(null);
+        setUserId(null);
+        setAccessToken(null);
+        setRefreshToken(null);
       }
+      
+      setLoading(false); // Finaliza o carregamento
     };
 
     checkAuth();
@@ -77,12 +90,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       const { accessToken, refreshToken, userId } = response.data;
 
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("userId", userId.toString());
+      await localStorage.setItem("accessToken", accessToken);
+      await localStorage.setItem("refreshToken", refreshToken.token);
+      await localStorage.setItem("userId", userId.toString());
 
       setAccessToken(accessToken);
-      setRefrashToken(refreshToken);
+      setRefreshToken(refreshToken);
       setIsAuthenticated(true);
       setUserId(userId);
       getUser(userId, accessToken).then((response) => {
@@ -102,7 +115,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setAccessToken(null);
     setIsAuthenticated(false);
     setUserId(null);
-    setUserData(null)
+    setUserData(null);
     navigate("/");
   };
 
@@ -113,7 +126,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         userData,
         userId,
         accessToken,
-        refrashToken,
+        refreshToken,
+        loading,
         login,
         logout,
       }}
