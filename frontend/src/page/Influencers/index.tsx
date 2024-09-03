@@ -1,4 +1,4 @@
-import { GetAllInfluencersData } from "@/@types/InfluencerData";
+import { GetAllInfluencersData } from "@/@types/influencerData";
 import { IconButton } from "@/components/IconButton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Pagination } from "@/components/Pagination";
@@ -41,7 +41,6 @@ export const Influencers = () => {
         setIsLoading(false);
       }
     }
-
     fetchData();
   }, [currentPage, currentLimit]);
   return (
