@@ -70,14 +70,12 @@ export const getUser = async (id: number, token: string) => {
   });
 };
 
-//////////////////////////////    Categories Routes   //////////////////////////////
+//////////////////////////////    Brands Routes   //////////////////////////////
 export const getAllBrands = async (token: string) => {
   return await api.get(`/brands`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
-//////////////////////////////    Brands Routes   //////////////////////////////
-
 //////////////////////////////    CEP Routes   //////////////////////////////
 export const getCepInformation = (cep: string) => {
   return axios.get(`https://viacep.com.br/ws/${cep}/json/`);

@@ -9,26 +9,34 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { File, NotePencil, Trash } from "@phosphor-icons/react";
-import { useEffect} from "react";
+import { File, Funnel, NotePencil, Trash } from "@phosphor-icons/react";
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useInfluencer } from "@/context/InfluencersContext";
 import { formatNumber } from "@/util/formatter";
 import { ModalForm } from "@/components/ModalForm";
+import { CustomPopover } from "@/components/CustomPopover";
 
 export const Influencers = () => {
-  const {fetchInfluencers, influencers, setSelectedInfluencer, influencersData} = useInfluencer()
+  const {
+    fetchInfluencers,
+    influencers,
+    setSelectedInfluencer,
+    influencersData,
+    handleDeleteInfluencerById,
+  } = useInfluencer();
   const { accessToken, loading } = useAuth();
   const [searchParams] = useSearchParams();
   const currentLimit = searchParams.get("pageSize") || "10";
   const currentPage = searchParams.get("page") || "1";
   const navigate = useNavigate();
 
-
-  function handleNavigateDetails(id:number) {
-    setSelectedInfluencer(influencers.filter(influencer=>influencer.id ===id)[0])
-    navigate(`./${id}`)
+  function handleNavigateDetails(id: number) {
+    setSelectedInfluencer(
+      influencers.filter((influencer) => influencer.id === id)[0]
+    );
+    navigate(`./${id}`);
   }
 
   useEffect(() => {
@@ -56,9 +64,15 @@ export const Influencers = () => {
     <div className="w-full flex flex-col justify-center items-center gap-4">
       <section className="w-full flex flex-row justify-between items-center">
         <div className="flex flex-row gap-4">
-          filtros
+          <CustomPopover
+            icon={<Funnel size={20} />}
+            triggerText="Filtro"
+            triggerClassName="px-2 py-1 flex flex-row items-center gap-2 hover:bg-slate-400 rounded border border-slate-500"
+          >
+            {(closePopover) => <div>Ainda não implementado</div>}
+          </CustomPopover>
         </div>
-        <ModalForm/>
+        <ModalForm />
       </section>
       <Table className="max-w-[960px]">
         <TableHeader>
@@ -91,7 +105,9 @@ export const Influencers = () => {
                   </TableCell>
                   <TableCell>{influencer.email}</TableCell>
                   <TableCell>{influencer.instagram_name}</TableCell>
-                  <TableCell className="">{formatNumber(influencer.followers)}</TableCell>
+                  <TableCell className="">
+                    {formatNumber(influencer.followers)}
+                  </TableCell>
                   <TableCell
                     id="actions"
                     className="flex flex-row max-w-[240px] gap-4"
@@ -101,14 +117,44 @@ export const Influencers = () => {
                       iconProps={{ size: 20, weight: "bold" }}
                       onClick={() => handleNavigateDetails(influencer.id)}
                     />
-                    <IconButton
+                    {/* <IconButton
                       icon={NotePencil}
                       iconProps={{ size: 20, weight: "bold" }}
-                    />
-                    <IconButton
-                      icon={Trash}
-                      iconProps={{ size: 20, weight: "bold" }}
-                    />
+                    /> */}
+
+                    <CustomPopover
+                      icon={
+                        <Trash
+                          size={20}
+                          weight="bold"
+                          className="transition-colors text-orange-500 group-hover:text-orange-600"
+                        />
+                      }
+                      triggerClassName="group flex flex-row items-center justify-center p-[4px] aspect-square min-h-11 rounded-lg border border-transparent bg-transparent hover:bg-slate-500/30"
+                    >
+                      {(closePopover) => (
+                        <div className="space-y-4">
+                          <span>Deseja deletar esse usuário?</span>
+                          <div className="flex flex-row gap-4 justify-end">
+                            <button
+                              className="px-2 py-1 border-2 rounded border-red-500 bg-red-500 hover:bg-red-600 hover:border-red-600 transition-colors"
+                              onClick={() => {
+                                handleDeleteInfluencerById(influencer.id.toString());
+                                closePopover(); // Fecha o popover
+                              }}
+                            >
+                              Sim
+                            </button>
+                            <button
+                              className="px-2 py-1 border-2 rounded border-slate-500/30 hover:bg-slate-500/30 transition-colors"
+                              onClick={closePopover}
+                            >
+                              Não
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </CustomPopover>
                   </TableCell>
                 </TableRow>
               ))}

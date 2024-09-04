@@ -4,7 +4,11 @@ import {
   InfluencerData,
   GetAllInfluencersRequest,
 } from "@/@types/influencerDataType";
-import { getAllInfluencers, getInfluencerById } from "@/service/api";
+import {
+  getAllInfluencers,
+  getInfluencerById,
+  deleteInfluencerById,
+} from "@/service/api";
 import { AxiosError } from "axios";
 import { NestErrorType } from "@/@types/errortypes";
 import { useAuth } from "./AuthContext";
@@ -19,6 +23,7 @@ interface InfluencerContextProps {
   ) => Promise<void>;
   fetchInfluencerById: (id: string) => Promise<void>;
   setSelectedInfluencer: (influencer: InfluencerData | null) => void;
+  handleDeleteInfluencerById: (id: string) => Promise<void>;
 }
 
 const InfluencerContext = createContext<InfluencerContextProps | undefined>(
@@ -69,6 +74,41 @@ export const InfluencerProvider: React.FC<InfluencerProviderProps> = ({
     }
   };
 
+  const handleDeleteInfluencerById = async (id: string) => {
+    try {
+      const InfluencerIndex: number = influencers.findIndex(
+        (influencer) => influencer.id === Number(id)
+      );
+      await deleteInfluencerById(id, accessToken!).then((response) => {
+        console.log("delete influencer response:", response.data);
+
+        setInfluencers((prev) => {
+          return {
+            ...prev.slice(0, InfluencerIndex),
+            ...prev.slice(InfluencerIndex + 1),
+          };
+        });
+        setInfluencersData((prev) => {
+          const updatedInfluencers = [
+            ...prev.influencers.slice(0, InfluencerIndex),
+            ...prev.influencers.slice(InfluencerIndex + 1),
+          ];
+          return {
+            ...prev,
+            influencers: updatedInfluencers,
+            totalCount: prev.totalCount - 1,
+          };
+        });
+      });
+    } catch (error) {
+      console.error("Failed to fetch influencers:", error);
+      const fetchError = error as AxiosError<NestErrorType>;
+      if (fetchError.response?.data.message == "jwt expired") {
+        logout();
+      }
+    }
+  };
+
   return (
     <InfluencerContext.Provider
       value={{
@@ -78,6 +118,7 @@ export const InfluencerProvider: React.FC<InfluencerProviderProps> = ({
         fetchInfluencers,
         fetchInfluencerById,
         setSelectedInfluencer,
+        handleDeleteInfluencerById,
       }}
     >
       {children}
