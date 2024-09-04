@@ -8,11 +8,12 @@ import {
 } from "@/components/ui/popover";
 import { CaretDown, CaretUp, User } from "phosphor-react";
 import { useAuth } from "@/context/AuthContext";
+import useWindowDimensions from "@/util/getWindowDimensions";
 
 export const Header = () => {
   const { userData, logout } = useAuth();
   const location = useLocation();
-  console.log("location", location);
+  const {width} = useWindowDimensions()
 
   const routes = [
     { path: "/influencers", name: "Influenciadores" },
@@ -24,7 +25,7 @@ export const Header = () => {
       <img src={Logo} alt="" className="md:block hidden" />
       <img src={LogoMini} alt="" className="md:hidden block" />
 
-      <nav className="flex flex-1 w-full max-w-[1280px] items-center justify-end gap-8">
+      <nav className="flex flex-1 w-full max-w-[1280px] items-center justify-end md:gap-8 gap-4">
         {routes.map((route) => (
           <Link
             key={route.path}
@@ -40,19 +41,29 @@ export const Header = () => {
         ))}
         <Popover>
           <PopoverTrigger className="px-2 py-1 flex flex-row items-center gap-2 hover:bg-slate-400 rounded">
-            <div>
-              <User />
+            <div className="xs:p-0 p-1 xs:border-0 border-2 rounded-full">
+              <User weight="bold"/>
             </div>
-            {userData?.name}
+            {width >= 425?(
+
+              <>
+              {userData?.name}
             <div>
               <CaretDown weight={"bold"} />
             </div>
+              </>
+            ):null
+            }
           </PopoverTrigger>
           <PopoverContent className="flex flex-col gap-2 bg-slate-600 border-0 text-slate-100">
             <strong className="text-center">User Data</strong>
             <div className="flex flex-row gap-2">
               <span>Id:</span>
               <span>{userData?.id}</span>
+            </div>
+            <div className="flex flex-row gap-2">
+              <span>Nome:</span>
+              <span>{userData?.name}</span>
             </div>
             <div className="flex flex-row gap-2">
               <span>email:</span>

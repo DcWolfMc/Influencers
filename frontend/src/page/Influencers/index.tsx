@@ -66,11 +66,23 @@ export const Influencers = () => {
       <section className="w-full flex flex-row justify-between items-center">
         <div className="flex flex-row gap-4">
           <CustomPopover
-            icon={<Funnel size={20} weight="fill"/>}
+            icon={<Funnel size={20} weight="fill" />}
             triggerText="Filtro"
             triggerClassName="px-4 py-2 flex flex-row items-center gap-2 hover:bg-slate-400 rounded border border-slate-500"
           >
-            {(closePopover) => <div><span>Ainda não implementado</span> <button></button></div>}
+            {(closePopover) => (
+              <div className="flex flex-col gap-4 items-center">
+                <span>Ainda não implementado</span>{" "}
+                <button
+                  className="w-full px-2 py-1 border-2 rounded border-orange-500 bg-orange-500 hover:bg-orange-600 hover:border-orange-600 transition-colors"
+                  onClick={() => {
+                    closePopover(); // Fecha o popover
+                  }}
+                >
+                  Fechar
+                </button>
+              </div>
+            )}
           </CustomPopover>
         </div>
         <ModalForm
@@ -80,7 +92,7 @@ export const Influencers = () => {
           title="Cadastrar Influencer"
           submitButtonText="Cadastrar"
           onSubmitFunction={createInfluencer}
-          icon={<Plus size={20} weight="bold"/>}
+          icon={<Plus size={20} weight="bold" />}
         />
       </section>
       <Table className="max-w-[960px]">
