@@ -76,11 +76,11 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
 
   const fetchCepInformation = async () => {
     await getCepInformation(cep).then((response) => {
-      console.log(response);
+      // console.log(response);
       const newAddress = `${response.data.logradouro} - ${response.data.bairro}, ${response.data.localidade}, ${response.data.uf}`;
       setValue("address", newAddress);
     });
-    console.log("procurando dados ao desfocar input de CEP.");
+    // console.log("procurando dados ao desfocar input de CEP.");
   };
 
   const onSubmit: SubmitHandler<NewInfluencerData & { cep: string }> = async (
@@ -98,7 +98,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
           },
           initialData.id
         ).then(() => {
-          console.log("success");
+          // console.log("success");
 
           toast.success("Cadastro realizado com sucesso! \n", {
             onClose: () => {},
@@ -116,7 +116,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
             ? dataWithoutCep.categories
             : [""],
         }).then(() => {
-          console.log("success");
+          // console.log("success");
 
           toast.success("Cadastro realizado com sucesso! \n", {
             onClose: () => {},

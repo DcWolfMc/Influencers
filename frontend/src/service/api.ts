@@ -20,7 +20,6 @@ export const getAllInfluencers = async (
   if (brands) params.append("brands", brands);
   params.append("page", page);
   params.append("pageSize", pageSize);
-  console.log("params:", params);
 
   return await api.get(`/influencers?${params.toString()}`, {
     headers: { Authorization: `Bearer ${token}` },

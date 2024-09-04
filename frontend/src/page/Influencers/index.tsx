@@ -80,7 +80,6 @@ export const Influencers = () => {
     async function fetchData() {
       if (!loading) {
         try {
-          console.log("categories on fetch", categoriesParams, typeof categoriesParams);
           
           await fetchInfluencers(
             {

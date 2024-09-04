@@ -140,7 +140,6 @@ export const InfluencerProvider: React.FC<InfluencerProviderProps> = ({
         },
         accessToken!
       ).then((response)=>{
-        console.log("handleEditInfluencer response data", response.data);
         
         setSelectedInfluencer(response.data)
       });

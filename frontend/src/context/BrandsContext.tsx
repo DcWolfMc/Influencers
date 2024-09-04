@@ -26,7 +26,7 @@ export const BrandProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     if (!loading) {
       fetchBrands(accessToken!);
-      console.log("accessToken", accessToken);
+      // console.log("accessToken", accessToken);
     }
   }, [loading]);
 

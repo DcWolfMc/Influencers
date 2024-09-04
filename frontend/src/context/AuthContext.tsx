@@ -44,7 +44,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       
       if (storedAccessToken && storedRefreshToken && storedUserId) {
         try {
-          console.log("AuthContext useEffect near try");
           const response = await refreshTokens(storedRefreshToken);
           const newAccessToken = response.data.accessToken;
           const newRefreshToken = response.data.refreshToken.token;
@@ -99,7 +98,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setIsAuthenticated(true);
       setUserId(userId);
       getUser(userId, accessToken).then((response) => {
-        console.log("getUserData:", response.data);
         setUserData(response.data);
       });
     } catch (error) {

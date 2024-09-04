@@ -20,7 +20,6 @@ export const MultiSelect = <T extends FieldValues>({
   const [selectedValues, setSelectedValues] = useState<string[]>(defaultValues||[]);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  console.log("MultiSelect selectedValues:", selectedValues);
   
 
   const toggleValue = (value: string) => {
