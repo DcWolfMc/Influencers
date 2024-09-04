@@ -19,6 +19,7 @@ import { GetInfluencersDto } from './dto/get-influencers.dto';
 import { CreateInfluencersDto } from './dto/create-influencers.dto';
 import { UpdateInfluencersDto } from './dto/update-influencers.dto';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { plainToClass } from 'class-transformer';
 
 @UseGuards(JwtAuthGuard)
 @Controller('influencers')
@@ -31,8 +32,9 @@ export class InfluencersController {
   }
 
   @Get()
-  findAll(@Query(ValidationPipe) query: GetInfluencersDto) {
-    return this.influencersService.findAll(query);
+  findAll(@Query(new ValidationPipe()) query: any) {
+    const dto = plainToClass(GetInfluencersDto, query);
+    return this.influencersService.findAll(dto);
   }
 
   @Get(':id')

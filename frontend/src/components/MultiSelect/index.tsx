@@ -5,17 +5,21 @@ interface MultiSelectProps<T extends FieldValues> {
   options: { name: string; value: string }[];
   name: Path<T>;
   control: Control<T>;
+  defaultValues?: string[]
 }
 
 export const MultiSelect = <T extends FieldValues>({
   options,
   name,
   control,
+  defaultValues
 }: MultiSelectProps<T>) => {
   const { field } = useController({ name, control });
-  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [selectedValues, setSelectedValues] = useState<string[]>(defaultValues||[]);
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  console.log("MultiSelect selectedValues:", selectedValues);
+  
 
   const toggleValue = (value: string) => {
     const newValues = selectedValues.includes(value)
