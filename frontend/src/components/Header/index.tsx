@@ -1,10 +1,19 @@
 import { Link, useLocation } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
+import LogoMini from "@/assets/logo-mini.svg";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CaretDown, CaretUp, User } from "phosphor-react";
+import { useAuth } from "@/context/AuthContext";
 
 export const Header = () => {
+  const { userData, logout } = useAuth();
   const location = useLocation();
-  console.log("location",location);
-  
+  console.log("location", location);
+
   const routes = [
     { path: "/influencers", name: "Influenciadores" },
     { path: "/brands", name: "Marcas" },
@@ -12,16 +21,16 @@ export const Header = () => {
 
   return (
     <header className="flex flex-row w-full py-4 px-8 justify-between items-center bg-slate-500 shadow-sm">
-      <Link to="/">
-        <img src={Logo} alt="Logo" />
-      </Link>
+      <img src={Logo} alt="" className="md:block hidden" />
+      <img src={LogoMini} alt="" className="md:hidden block" />
+
       <nav className="flex flex-1 w-full max-w-[1280px] items-center justify-end gap-8">
         {routes.map((route) => (
           <Link
             key={route.path}
             to={route.path}
             className={`${
-              location.pathname.includes(route.path) 
+              location.pathname.includes(route.path)
                 ? " border-b-4 border-orange-500 font-bold"
                 : "border-b-4 border-transparent hover:border-orange-500 font-bold"
             }`}
@@ -29,6 +38,34 @@ export const Header = () => {
             {route.name}
           </Link>
         ))}
+        <Popover>
+          <PopoverTrigger className="px-2 py-1 flex flex-row items-center gap-2 hover:bg-slate-400 rounded">
+            <div>
+              <User />
+            </div>
+            {userData?.name}
+            <div>
+              <CaretDown weight={"bold"} />
+            </div>
+          </PopoverTrigger>
+          <PopoverContent className="flex flex-col gap-2 bg-slate-600 border-0 text-slate-100">
+            <strong className="text-center">User Data</strong>
+            <div className="flex flex-row gap-2">
+              <span>Id:</span>
+              <span>{userData?.id}</span>
+            </div>
+            <div className="flex flex-row gap-2">
+              <span>email:</span>
+              <span>{userData?.email}</span>
+            </div>
+            <button
+              className="mt-4 w-full flex flex-row p-2 rounded border border-orange-500 hover:bg-orange-500 items-center justify-center transition-colors"
+              onClick={logout}
+            >
+              Logout
+            </button>
+          </PopoverContent>
+        </Popover>
       </nav>
     </header>
   );
