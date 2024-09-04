@@ -21,7 +21,6 @@ export const getAllInfluencers = async (
 
   return await api.get(`/influencers?${params.toString()}`, {headers: { Authorization: `Bearer ${token}` }});
 };
-
 export const getInfluencerById = async (id: string) => {
   return await api.get(`/influencers/${id}`);
 };

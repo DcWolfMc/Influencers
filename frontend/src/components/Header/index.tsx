@@ -3,7 +3,8 @@ import Logo from "../../assets/logo.svg";
 
 export const Header = () => {
   const location = useLocation();
-
+  console.log("location",location);
+  
   const routes = [
     { path: "/influencers", name: "Influenciadores" },
     { path: "/brands", name: "Marcas" },
@@ -20,7 +21,7 @@ export const Header = () => {
             key={route.path}
             to={route.path}
             className={`${
-              location.pathname === route.path
+              location.pathname.includes(route.path) 
                 ? " border-b-4 border-orange-500 font-bold"
                 : "border-b-4 border-transparent hover:border-orange-500 font-bold"
             }`}

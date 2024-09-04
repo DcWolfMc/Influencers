@@ -9,27 +9,32 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getAllInfluencers } from "@/service/api";
 import { File, NotePencil, Trash } from "@phosphor-icons/react";
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useEffect} from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
-import { GetAllInfluencersData } from "@/@types/influencerDataType";
+import { useInfluencer } from "@/context/InfluencersContext";
+import { formatNumber } from "@/util/formatter";
 
 export const Influencers = () => {
+  const {fetchInfluencers, influencers, setSelectedInfluencer, influencersData} = useInfluencer()
   const { accessToken, loading } = useAuth();
   const [searchParams] = useSearchParams();
   const currentLimit = searchParams.get("pageSize") || "10";
   const currentPage = searchParams.get("page") || "1";
-  const [influencersData, setInfluencersData] = useState<GetAllInfluencersData>(
-    { influencers: [], pageSize: 10, totalCount: 0, totalPages: 1 }
-  );
+  const navigate = useNavigate();
+
+
+  function handleNavigateDetails(id:number) {
+    setSelectedInfluencer(influencers.filter(influencer=>influencer.id ===id)[0])
+    navigate(`./${id}`)
+  }
 
   useEffect(() => {
     async function fetchData() {
       if (!loading) {
         try {
-          const response = await getAllInfluencers(
+          await fetchInfluencers(
             {
               brands: "",
               categories: "",
@@ -38,7 +43,6 @@ export const Influencers = () => {
             },
             accessToken ? accessToken : ""
           );
-          setInfluencersData(response.data);
         } catch (error) {
           console.error("Failed to fetch influencers", error);
         } finally {
@@ -81,7 +85,7 @@ export const Influencers = () => {
                   </TableCell>
                   <TableCell>{influencer.email}</TableCell>
                   <TableCell>{influencer.instagram_name}</TableCell>
-                  <TableCell className="">{influencer.followers}</TableCell>
+                  <TableCell className="">{formatNumber(influencer.followers)}</TableCell>
                   <TableCell
                     id="actions"
                     className="flex flex-row max-w-[240px] gap-4"
@@ -89,6 +93,7 @@ export const Influencers = () => {
                     <IconButton
                       icon={File}
                       iconProps={{ size: 20, weight: "bold" }}
+                      onClick={() => handleNavigateDetails(influencer.id)}
                     />
                     <IconButton
                       icon={NotePencil}
