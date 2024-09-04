@@ -44,7 +44,6 @@ export class CreateInfluencersDto {
 
   @IsOptional()
   @IsString()
-  @IsUrl()
   image?: string;
 
   @IsDefined()
@@ -56,13 +55,11 @@ export class CreateInfluencersDto {
   @IsArray()
   @IsString({ each: true })
   @ArrayNotEmpty()
-  @Transform(({ value }) => (typeof value === 'string' ? value.split(',') : value))
   categories?: string[];
 
   @IsOptional()
   @IsArray()
   @IsString({ each: true })
   @ArrayNotEmpty()
-  @Transform(({ value }) => (typeof value === 'string' ? value.split(',') : value))
   brands?: string[];
 }
