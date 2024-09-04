@@ -44,7 +44,7 @@ export const editInfluencer = async (
   InfluencerData: Partial<NewInfluencerData>,
   token: string
 ) => {
-  return api.put(`/influencers/${id}`, InfluencerData, {
+  return api.patch(`/influencers/${id}`, InfluencerData, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };

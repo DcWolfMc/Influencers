@@ -1,13 +1,13 @@
 import { useInfluencer } from "@/context/InfluencersContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowLeft, NotePencil, Trash, User } from "phosphor-react";
 import { formatNumber } from "@/util/formatter";
 import { Tag } from "@/components/Tag";
 import { CustomPopover } from "@/components/CustomPopover";
+import { ModalForm } from "@/components/ModalForm";
 export const InfluencerDetails: React.FC = () => {
-  const { selectedInfluencer, handleDeleteInfluencerById } = useInfluencer();
-  console.log("selectedInfluencer", selectedInfluencer);
+  const { selectedInfluencer, handleDeleteInfluencerById, handleEditInfluencer } = useInfluencer();
   //   const { influencerId } = useParams();
   const navigate = useNavigate();
 
@@ -73,10 +73,16 @@ export const InfluencerDetails: React.FC = () => {
           </div>
         </section>
         <div className="absolute right-4 top-0 flex-1 flex flex-row gap-4 justify-center items-center md:mt-0">
-          <button className="flex gap-2 items-center h-10 px-4 border border-orange-500 hover:bg-orange-500 rounded transition-colors font-bold">
-            <NotePencil />
-            Editar
-          </button>
+          <ModalForm
+          triggerClassName="flex gap-2 items-center h-10 px-4 border border-orange-500 hover:bg-orange-500 rounded transition-colors font-bold"
+          triggerText="Editar"
+          description="Preencha os campos abaixo para editar um novo influenciador."
+          title="Editar Influencer"
+          onSubmitFunction={handleEditInfluencer}
+          submitButtonText="Salvar"
+          icon={<NotePencil size={20} weight="bold"/>}
+          initialData={selectedInfluencer}
+        />
           <CustomPopover
             icon={
               <Trash

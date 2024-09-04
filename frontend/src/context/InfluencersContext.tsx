@@ -3,11 +3,14 @@ import {
   GetAllInfluencersData,
   InfluencerData,
   GetAllInfluencersRequest,
+  NewInfluencerData,
 } from "@/@types/influencerDataType";
 import {
   getAllInfluencers,
   getInfluencerById,
   deleteInfluencerById,
+  addInfluencer,
+  editInfluencer,
 } from "@/service/api";
 import { AxiosError } from "axios";
 import { NestErrorType } from "@/@types/errortypes";
@@ -23,6 +26,11 @@ interface InfluencerContextProps {
   ) => Promise<void>;
   fetchInfluencerById: (id: string) => Promise<void>;
   setSelectedInfluencer: (influencer: InfluencerData | null) => void;
+  createInfluencer: (data: NewInfluencerData) => Promise<void>;
+  handleEditInfluencer : (
+    data: Partial<NewInfluencerData>,
+    id?: number | string
+  ) => Promise<void>;
   handleDeleteInfluencerById: (id: string) => Promise<void>;
 }
 
@@ -108,7 +116,36 @@ export const InfluencerProvider: React.FC<InfluencerProviderProps> = ({
       }
     }
   };
-
+  const createInfluencer = async (data: NewInfluencerData) => {
+    await addInfluencer(
+      {
+        ...data,
+        followers: Number(data.followers),
+        following: Number(data.following),
+      },
+      accessToken!
+    );
+  };
+  const handleEditInfluencer  = async (
+    data: Partial<NewInfluencerData>,
+    id?: number | string
+  ) => {
+    const influencerId = typeof id === "number" ? id.toString() : id;
+    if (influencerId) {
+      await editInfluencer(influencerId,
+        {
+          ...data,
+          followers: Number(data.followers),
+          following: Number(data.following),
+        },
+        accessToken!
+      ).then((response)=>{
+        console.log("handleEditInfluencer response data", response.data);
+        
+        setSelectedInfluencer(response.data)
+      });
+    }
+  };
   return (
     <InfluencerContext.Provider
       value={{
@@ -118,7 +155,9 @@ export const InfluencerProvider: React.FC<InfluencerProviderProps> = ({
         fetchInfluencers,
         fetchInfluencerById,
         setSelectedInfluencer,
+        createInfluencer,
         handleDeleteInfluencerById,
+        handleEditInfluencer ,
       }}
     >
       {children}

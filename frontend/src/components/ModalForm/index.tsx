@@ -1,4 +1,4 @@
-import { NewInfluencerData } from "@/@types/influencerDataType";
+import { NewInfluencerData, InfluencerData } from "@/@types/influencerDataType";
 import {
   Dialog,
   DialogContent,
@@ -8,24 +8,43 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import { addInfluencer, getCepInformation } from "@/service/api";
+import { getCepInformation } from "@/service/api";
 import { maskCEP } from "@/util/masks";
-import { Plus, User } from "phosphor-react";
-import { FunctionComponent, useState } from "react";
+import { User } from "phosphor-react";
+import { FunctionComponent, ReactNode, useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Avatar, AvatarFallback } from "../ui/avatar";
 import { AvatarImage } from "@radix-ui/react-avatar";
 import { MultiSelect } from "../MultiSelect";
 import Categories from "@/util/categories.json";
-import { useAuth } from "@/context/AuthContext";
 import { useBrands } from "@/context/BrandsContext";
+import { AxiosError } from "axios";
+import { NestErrorType } from "@/@types/errortypes";
 
-interface ModalFormProps {}
-export const ModalForm: FunctionComponent<ModalFormProps> = ({}) => {
-  const { accessToken } = useAuth();
+interface ModalFormProps {
+  onSubmitFunction: (data: any, id?: number) => Promise<void>;
+  initialData?: InfluencerData;
+  title: string;
+  description: string;
+  triggerText?: string;
+  triggerClassName?: string;
+  submitButtonText: string;
+  icon?: ReactNode;
+}
+export const ModalForm: FunctionComponent<ModalFormProps> = ({
+  description,
+  onSubmitFunction,
+  title,
+  initialData,
+  icon,
+  triggerClassName,
+  triggerText,
+  submitButtonText,
+}) => {
   const { brands } = useBrands();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [formError, setFormError] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const {
     register,
@@ -36,12 +55,26 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({}) => {
     reset,
     control,
   } = useForm<NewInfluencerData & { cep: string }>();
-  console.log("errors", errors);
-
   const cep = watch("cep");
   const image = watch("image");
+
+  useEffect(() => {
+    if (initialData) {
+      // Transforma as categorias e marcas para arrays de strings
+      const mappedData = {
+        ...initialData,
+        categories: initialData.categories?.map((category) => category.name),
+        brands: initialData.brands?.map((brand) => brand.name),
+      };
+
+      // Seta os valores do formulário com o mappedData
+      Object.keys(mappedData).forEach((key) => {
+        setValue(key as keyof NewInfluencerData, (mappedData as any)[key]);
+      });
+    }
+  }, [initialData, setValue]);
+
   const fetchCepInformation = async () => {
-    console.log(cep);
     await getCepInformation(cep).then((response) => {
       console.log(response);
       const newAddress = `${response.data.logradouro} - ${response.data.bairro}, ${response.data.localidade}, ${response.data.uf}`;
@@ -56,25 +89,50 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({}) => {
     setIsSubmitting(true);
     try {
       const { cep, ...dataWithoutCep } = data;
-      await addInfluencer(
-        {
+      if (initialData) {
+        await onSubmitFunction(
+          {
+            ...dataWithoutCep,
+            followers: Number(dataWithoutCep.followers),
+            following: Number(dataWithoutCep.following),
+          },
+          initialData.id
+        ).then(() => {
+          console.log("success");
+
+          toast.success("Cadastro realizado com sucesso! \n", {
+            onClose: () => {},
+          });
+          reset(); // Limpa os campos do formulário
+          setIsOpen(false); // Fecha o modal
+        });
+      } else {
+        await onSubmitFunction({
           ...dataWithoutCep,
           followers: Number(dataWithoutCep.followers),
           following: Number(dataWithoutCep.following),
-        },
-        accessToken!
-      ).then(() => {
-        console.log("success");
+          brands: dataWithoutCep.brands ? dataWithoutCep.brands : [""],
+          categories: dataWithoutCep.categories
+            ? dataWithoutCep.categories
+            : [""],
+        }).then(() => {
+          console.log("success");
 
-        toast.success("Cadastro realizado com sucesso! \n", {
-          onClose: () => {},
+          toast.success("Cadastro realizado com sucesso! \n", {
+            onClose: () => {},
+          });
+          reset(); // Limpa os campos do formulário
+          setIsOpen(false); // Fecha o modal
         });
-        reset(); // Limpa os campos do formulário
-        setIsOpen(false); // Fecha o modal
-      }); // Simulate form submission
-      // Implement your submission logic here (e.g., API call)
+      }
     } catch (error) {
+      const submitError = error as AxiosError<NestErrorType>;
       console.error("Submission error:", error);
+      setFormError(
+        submitError.response
+          ? submitError.response.data.message
+          : submitError.message
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -89,15 +147,13 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({}) => {
     }) || [];
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger className="px-4 py-2 flex flex-row items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 rounded">
-        <Plus size={20} weight="bold" /> Influencer
+      <DialogTrigger className={`${triggerClassName}`}>
+        {icon} {triggerText}
       </DialogTrigger>
       <DialogContent className="w-full max-w-[80%] bg-slate-800 border-slate-500">
         <DialogHeader>
-          <DialogTitle>Cadastrar Influencer</DialogTitle>
-          <DialogDescription>
-            Preencha os campos abaixo para cadastrar um novo influenciador.
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <form
           action=""
@@ -249,7 +305,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({}) => {
                       className="p-2 rounded-md bg-slate-800 text-slate-100 border-2 border-slate-500"
                       type="number"
                       maxLength={20}
-                      placeholder="Número de seguidores"
+                      placeholder="Número de seguindos"
                     />
                     {errors.following && (
                       <p className="text-red-500">{errors.following.message}</p>
@@ -331,7 +387,9 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({}) => {
               </div>
             </div>
           </div>
-
+          <div className="w-full text-red-500">
+            <p>{formError}</p>
+          </div>
           <button
             type="submit"
             className={`mt-[96px] p-2 rounded-md w-full max-w-[368px] font-bold self-center ${
@@ -357,7 +415,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({}) => {
                 />
               </svg>
             ) : (
-              "Cadastrar"
+              ` ${submitButtonText} `
             )}
           </button>
         </form>

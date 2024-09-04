@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { File, Funnel, NotePencil, Trash } from "@phosphor-icons/react";
+import { File, Funnel, Trash, Plus } from "@phosphor-icons/react";
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
@@ -25,6 +25,7 @@ export const Influencers = () => {
     setSelectedInfluencer,
     influencersData,
     handleDeleteInfluencerById,
+    createInfluencer,
   } = useInfluencer();
   const { accessToken, loading } = useAuth();
   const [searchParams] = useSearchParams();
@@ -65,14 +66,22 @@ export const Influencers = () => {
       <section className="w-full flex flex-row justify-between items-center">
         <div className="flex flex-row gap-4">
           <CustomPopover
-            icon={<Funnel size={20} />}
+            icon={<Funnel size={20} weight="fill"/>}
             triggerText="Filtro"
-            triggerClassName="px-2 py-1 flex flex-row items-center gap-2 hover:bg-slate-400 rounded border border-slate-500"
+            triggerClassName="px-4 py-2 flex flex-row items-center gap-2 hover:bg-slate-400 rounded border border-slate-500"
           >
-            {(closePopover) => <div>Ainda não implementado</div>}
+            {(closePopover) => <div><span>Ainda não implementado</span> <button></button></div>}
           </CustomPopover>
         </div>
-        <ModalForm />
+        <ModalForm
+          triggerClassName="px-4 py-2 flex flex-row items-center justify-center gap-2 bg-orange-500 hover:bg-orange-600 rounded"
+          triggerText="Influencer"
+          description="Preencha os campos abaixo para cadastrar um novo influenciador."
+          title="Cadastrar Influencer"
+          submitButtonText="Cadastrar"
+          onSubmitFunction={createInfluencer}
+          icon={<Plus size={20} weight="bold"/>}
+        />
       </section>
       <Table className="max-w-[960px]">
         <TableHeader>
@@ -139,7 +148,9 @@ export const Influencers = () => {
                             <button
                               className="px-2 py-1 border-2 rounded border-red-500 bg-red-500 hover:bg-red-600 hover:border-red-600 transition-colors"
                               onClick={() => {
-                                handleDeleteInfluencerById(influencer.id.toString());
+                                handleDeleteInfluencerById(
+                                  influencer.id.toString()
+                                );
                                 closePopover(); // Fecha o popover
                               }}
                             >
