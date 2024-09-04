@@ -1,6 +1,6 @@
 <div align="center">
   <h1 align="center">
-    InFluencers
+    <img src="./.github/assets/logo.svg" alt="InFluencers" width="360px">
     <br />
     <br />
     <div>
