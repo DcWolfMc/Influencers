@@ -17,13 +17,14 @@ export const InfluencerDetails: React.FC = () => {
   return (
     <div className="relative w-full min-h-screen flex flex-col justify-center items-center gap-16">
       <div className="w-full pb-4 flex flex-col justify-center items-center border-b border-slate-600">
-      <section className="w-full flex flex-row gap-8 justify-center items-center">
+      <section className="w-full flex md:flex-row flex-col gap-8 justify-center items-center">
       <button
-        className="md:absolute left-0 top-0 p-4 hover:bg-slate-500 h-40 transition-colors"
+        className="md:absolute md:h-40 left-4 top-0 md:m-0 px-6 py-2 md:p-4 self-start hover:bg-slate-500 transition-colors"
         onClick={() => navigate(-1)}
       >
-        <ArrowLeft size={40} weight="bold" />
+        <ArrowLeft className="md:size-10 size-8" weight="bold" />
       </button>
+      <div className="flex md:flex-row flex-col gap-4 items-center">
         <Avatar className="aspect-square w-40 h-auto border-4 border-orange-500 shadow-md bg-slate-700">
           <AvatarImage src={selectedInfluencer.image} />
           <AvatarFallback className="bg-slate-300">
@@ -42,12 +43,12 @@ export const InfluencerDetails: React.FC = () => {
               {selectedInfluencer.email}
             </span>
 
-            <div className="flex flex-row justify-between gap-8">
-              <div className="flex flex-row justify-between gap-2 text-sm font-bold">
+            <div className="flex flex-row justify-between md:gap-8 gap-4">
+              <div className="flex flex-row gap-2 text-sm font-bold">
                 <span className=" uppercase text-slate-400">Seguidores:</span>
                 <span>{formatNumber(selectedInfluencer.followers)}</span>
               </div>
-              <div className="flex flex-row justify-between gap-2 text-sm font-bold">
+              <div className="flex flex-row gap-2 text-sm font-bold">
                 <span className=" uppercase text-slate-400">Seguindo:</span>
                 <span>{formatNumber(selectedInfluencer.following)}</span>
               </div>
@@ -59,8 +60,9 @@ export const InfluencerDetails: React.FC = () => {
             </div>
           </div>
         </div>
+        </div>
       </section>
-      <div className="md:absolute right-0 top-0 flex-1 flex flex-row gap-4 justify-center items-center md:mt-0 mt-4">
+      <div className="absolute right-4 top-0 flex-1 flex flex-row gap-4 justify-center items-center md:mt-0">
         <button className="flex gap-2 items-center h-10 px-4 border border-orange-500 hover:bg-orange-500 rounded transition-colors font-bold">
           <NotePencil />
           Editar
