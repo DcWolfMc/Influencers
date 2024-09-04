@@ -6,13 +6,15 @@ interface MultiSelectProps<T extends FieldValues> {
   name: Path<T>;
   control: Control<T>;
   defaultValues?: string[]
+  menuHeight?: number
 }
 
 export const MultiSelect = <T extends FieldValues>({
   options,
   name,
   control,
-  defaultValues
+  defaultValues,
+  menuHeight = 140
 }: MultiSelectProps<T>) => {
   const { field } = useController({ name, control });
   const [selectedValues, setSelectedValues] = useState<string[]>(defaultValues||[]);
@@ -56,7 +58,7 @@ export const MultiSelect = <T extends FieldValues>({
         )}
       </div>
       {menuOpen && (
-        <div className="absolute w-full max-h-[120px] overflow-auto bg-slate-600 border border-gray-300 rounded mt-1">
+        <div className={`absolute w-full max-h-[${menuHeight}px] overflow-auto bg-slate-600 border border-gray-300 rounded mt-1 z-10`}>
           {options.map((option) => (
             <div
               key={option.value}

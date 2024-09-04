@@ -20,6 +20,7 @@ import { CustomPopover } from "@/components/CustomPopover";
 import { useForm } from "react-hook-form";
 import { MultiSelect } from "@/components/MultiSelect";
 import Categories from "@/util/categories.json";
+import { useBrands } from "@/context/BrandsContext";
 export const Influencers = () => {
   const {
     fetchInfluencers,
@@ -30,19 +31,25 @@ export const Influencers = () => {
     createInfluencer,
   } = useInfluencer();
   const { accessToken, loading } = useAuth();
+  const { brands } = useBrands()
   const [searchParams, setSearchParams] = useSearchParams();
   const currentLimit = searchParams.get("pageSize") || "10";
-  const categories = searchParams.get("categories") || null;
-  const categoriesArray = typeof categories  == "string"? categories.split(","): []
-  const brands = searchParams.get("brands") || null;
-  // const brandsArray = typeof brands  == "string"?brands.split(","):[]
+  const categoriesParams = searchParams.get("categories") || null;
+  const categoriesArray = typeof categoriesParams  == "string"? categoriesParams.split(","): []
+  const brandsParams = searchParams.get("brands") || null;
+  const brandsArray = typeof brandsParams  == "string"?brandsParams.split(","):[]
   const currentPage = searchParams.get("page") || "1";
   const navigate = useNavigate();
-  const {control, formState: { errors }, getValues } = useForm<{categories:"", brands:""}>()
+  const {control, getValues } = useForm<{categories:"", brands:""}>()
 
   const categoriesOptions = Categories.map((value) => {
     return { name: value, value: value };
   });
+  let brandsOptions =
+    brands?.map((value) => {
+      return { name: value.name, value: value.name };
+    }) || [];
+  brands
   function handleNavigateDetails(id: number) {
     setSelectedInfluencer(
       influencers.filter((influencer) => influencer.id === id)[0]
@@ -73,12 +80,12 @@ export const Influencers = () => {
     async function fetchData() {
       if (!loading) {
         try {
-          console.log("categories on fetch", categories, typeof categories);
+          console.log("categories on fetch", categoriesParams, typeof categoriesParams);
           
           await fetchInfluencers(
             {
-              brands: brands ||"",
-              categories: categories ||"",
+              brands: brandsParams ||"",
+              categories: categoriesParams ||"",
               page: currentPage,
               pageSize: currentLimit,
             },
@@ -91,7 +98,7 @@ export const Influencers = () => {
       }
     }
     fetchData();
-  }, [currentPage, currentLimit, categories, brands, loading, accessToken]);
+  }, [currentPage, currentLimit, categoriesParams, brandsParams, loading, accessToken]);
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
       <section className="w-full flex flex-row justify-between items-center">
@@ -103,7 +110,6 @@ export const Influencers = () => {
           >
             {(closePopover) => (
               <div className="flex flex-col gap-4 items-center">
-                <span>Ainda não implementado</span>
                 <label
                   htmlFor="categories"
                   className="flex flex-col gap-2 w-full max-w-[368px]"
@@ -114,10 +120,22 @@ export const Influencers = () => {
                     control={control}
                     options={categoriesOptions}
                     defaultValues={categoriesArray}
+                    menuHeight={220}
                   />
-                  {errors.categories && (
-                    <p className="text-red-500">{errors.categories.message}</p>
-                  )}
+                </label>
+
+                <label
+                  htmlFor="brands"
+                  className="flex flex-col gap-2 w-full max-w-[368px]"
+                >
+                  <span className="font-bold">Marcas: </span>
+                  <MultiSelect
+                    name="brands"
+                    control={control}
+                    options={brandsOptions}
+                    defaultValues={brandsArray}
+                    menuHeight={220}
+                  />
                 </label>
                 <button
                   className="w-full px-2 py-1 border-2 rounded border-orange-500 bg-orange-500 hover:bg-orange-600 hover:border-orange-600 transition-colors"
@@ -126,7 +144,7 @@ export const Influencers = () => {
                     closePopover(); // Fecha o popover
                   }}
                 >
-                  Fechar
+                  Aplicar
                 </button>
               </div>
             )}

@@ -150,7 +150,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
       <DialogTrigger className={`${triggerClassName}`}>
         {icon} {triggerText}
       </DialogTrigger>
-      <DialogContent className="w-full max-w-[80%] bg-slate-800 border-slate-500">
+      <DialogContent className="w-full max-w-[80%] max-h-[90vh] overflow-auto bg-slate-800 border-slate-500">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
@@ -160,9 +160,9 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-4"
         >
-          <div className="flex flex-row justify-between">
+          <div className="flex md:flex-row flex-col justify-between">
             <div className="flex flex-col gap-4  justify-center items-center">
-              <Avatar className="aspect-square w-40 h-auto border-4 border-orange-500 shadow-md bg-slate-700">
+              <Avatar className="aspect-square md:w-40 w-32 h-auto border-4 border-orange-500 shadow-md bg-slate-700">
                 <AvatarImage src={image} />
                 <AvatarFallback className="bg-slate-300">
                   <User size={160} className="text-slate-700" />
@@ -186,8 +186,8 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
               </label>
             </div>
 
-            <div id="wrapper-right" className="flex flex-col gap-4">
-              <div className="flex fex-row gap-4">
+            <div id="wrapper-right" className="flex flex-col gap-4 md:items-start items-center">
+              <div className="flex md:flex-row flex-col gap-4">
                 <label
                   htmlFor="name"
                   className="flex flex-col gap-2 w-full max-w-[368px]"
@@ -237,7 +237,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
                   )}
                 </label>
               </div>
-              <div className="flex fex-row gap-4">
+              <div className="flex md:flex-row flex-col gap-4">
                 <label
                   htmlFor="instagram_name"
                   className="flex flex-col gap-2 w-full max-w-[368px]"
@@ -264,7 +264,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
                     </p>
                   )}
                 </label>
-                <div className="flex fex-row gap-4 max-w-[368px]">
+                <div className="flex flex-row gap-4 max-w-[368px]">
                   <label
                     htmlFor="seguidores"
                     className="flex-1 flex flex-col gap-2 w-full max-w-[176px]"
@@ -313,7 +313,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
                   </label>
                 </div>
               </div>
-              <div className="flex fex-row gap-4">
+              <div className="flex md:flex-row flex-col gap-4">
                 <label
                   htmlFor="cep"
                   className="flex flex-col gap-2 w-full max-w-[368px]"
@@ -355,7 +355,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
                   )}
                 </label>
               </div>
-              <div className="flex fex-row gap-4">
+              <div className="w-full flex md:flex-row flex-col gap-4 items-center">
                 <label
                   htmlFor="categories"
                   className="flex flex-col gap-2 w-full max-w-[368px]"
