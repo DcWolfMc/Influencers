@@ -13,12 +13,12 @@
   <img src="http://img.shields.io/static/v1?label=STATUS&message=DEVELOPMENT&color=GREEN&style=for-the-badge" alt="In Development" />
 <p/>
 
-## Tabela de Conteudo
+## Tabela de Conteúdo
   
-* [Tabela de Conteudo](#tabela-de-conteudo)
+* [Tabela de Conteúdo](#tabela-de-conteúdo)
 * [Introdução](#introdução)
 * [Estrutura do Repositório](#estrutura-do-repositório)
-* [Instalacao](#instalacao)
+* [Instalação](#instalação)
 * [Tecnologias Utilizadas](#tecnologias-utilizadas)
 * [Funcionalidades Implementadas](#funcionalidades-implementadas)
 * [Funcionalidades para Implementar](#funcionalidades-para-implementar)
@@ -42,7 +42,7 @@ A raiz do repositório é composta por 3 páginas.
 2. **backend** Onde está localizado o backend do sistema feito em Node.js com Nest.js e Prisma de ORM. Aqui também está localizado o bando de dados em SQLite e arquivos como ```docker-compose.yml```.
 3. **frontend** Onde está localizada a frente do sistema, feito em React.js com Typescript e Vite.
 
-## Instalacao
+## Instalação
 ### Docker:
 Se você estiver como rodar a aplicação em um container e tiver o Docker ou Docker Desktop funcionando em sua maquina, você pode rodar o arquivo ```docker-compose.yml``` localizado no backend da aplicação que será iniciado
 a montagem de um ambiente isolado para experimentar a aplicação. Nesse caso, pode-se rodar o seguinte comando.
