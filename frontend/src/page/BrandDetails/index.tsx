@@ -1,5 +1,5 @@
 export const BrandDetails = ()=>{
     return(
-        <h1>Brand Details</h1>
+        <h1 className="text-center">Brand Details ainda não implementada</h1>
     )
 }
