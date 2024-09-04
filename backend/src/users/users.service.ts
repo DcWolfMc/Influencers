@@ -8,7 +8,7 @@ import { FindUserDto } from './dto/find-user.dto';
 export class UsersService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async create(userDto: Prisma.UserCreateInput) {
+  async create(userDto:Prisma.UserCreateInput) {
     const { email, name, password } = userDto;
     const hashedPassword = await hash(password, 10);
 
@@ -35,7 +35,7 @@ export class UsersService {
     return this.removePassword(user);
   }
 
-  async update(id: number, updatedUser: Prisma.UserUpdateInput) {
+  async update(id: number, updatedUser:Prisma.UserUpdateInput) {
     return this.databaseService.$transaction(async (prisma) => {
       const user = await prisma.user.update({
         where: { id },

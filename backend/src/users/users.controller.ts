@@ -42,7 +42,7 @@ export class UsersController {
   @Post() // POST /users
   create(
     @Body(ValidationPipe)
-    user: Prisma.UserCreateInput, // One possible pattern for this would be createUserDto
+    user:Prisma.UserCreateInput, // One possible pattern for this would be createUserDto
   ) {
     return this.userService.create(user);
   }
@@ -51,7 +51,7 @@ export class UsersController {
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe)
-    userUpdate: Prisma.UserUpdateInput, // One possible pattern for this would be updateUserDto
+    userUpdate:Prisma.UserUpdateInput, // One possible pattern for this would be updateUserDto
   ) {
     return this.userService.update(id, userUpdate);
   }

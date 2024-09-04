@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma, Brand } from '@prisma/client';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateBrandDto } from './dto/create-brand.dto';
 import { UpdateBrandDto } from './dto/update-brand.dto';
@@ -9,17 +8,17 @@ import { UpdateBrandDto } from './dto/update-brand.dto';
 export class BrandsService {
   constructor(private readonly databaseService: DatabaseService) {}
 
-  async create(createBrandDto: CreateBrandDto): Promise<Brand> {
+  async create(createBrandDto: CreateBrandDto) {
     return await this.databaseService.brand.create({
       data: createBrandDto,
     });
   }
 
-  async findAll(): Promise<Brand[]> {
+  async findAll() {
     return await this.databaseService.brand.findMany();
   }
 
-  async findOne(id: number): Promise<Brand | null> {
+  async findOne(id: number) {
     return await this.databaseService.brand.findUnique({
       where: { id },
     });
@@ -28,7 +27,7 @@ export class BrandsService {
   async update(
     id: number,
     updateBrandDto: UpdateBrandDto,
-  ): Promise<Brand | null> {
+  ) {
     try {
       return await this.databaseService.brand.update({
         where: { id },
@@ -39,7 +38,7 @@ export class BrandsService {
     }
   }
 
-  async remove(id: number): Promise<Brand | null> {
+  async remove(id: number) {
     try {
       return await this.databaseService.brand.delete({
         where: { id },
