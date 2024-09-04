@@ -23,7 +23,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get() // GET /users or /users?role=value
   findAll(@Req() req: Request) {
-    console.log('find All log', req.user);
     return this.userService.findAll();
   }
 

@@ -47,7 +47,7 @@ export class InfluencersService {
   }
 
   async findAll(query: GetInfluencersDto) {
-    const { categories, brands, page = 1, pageSize = 10 } = query;
+    const { categories = [], brands = [], page = 1, pageSize = 10 } = query;
     const skip = Number.isInteger(Number(page)) ? Number(page) : 1;
     const take = Number.isInteger(Number(pageSize)) ? Number(pageSize) : 10;
   
