@@ -1,6 +1,9 @@
 import axios from "axios";
 import { newUserData } from "@/@types/userData";
-import { GetAllInfluencersRequest, NewInfluencerData } from "@/@types/influencerDataType";
+import {
+  GetAllInfluencersRequest,
+  NewInfluencerData,
+} from "@/@types/influencerDataType";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -19,22 +22,36 @@ export const getAllInfluencers = async (
   params.append("pageSize", pageSize);
   console.log("params:", params);
 
-  return await api.get(`/influencers?${params.toString()}`, {headers: { Authorization: `Bearer ${token}` }});
+  return await api.get(`/influencers?${params.toString()}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
-export const getInfluencerById = async (id: string) => {
-  return await api.get(`/influencers/${id}`);
+export const getInfluencerById = async (id: string, token: string) => {
+  return await api.get(`/influencers/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
-export const addInfluencer = async (InfluencerData: NewInfluencerData) => {
-  return api.post(`/influencers`, InfluencerData);
+export const addInfluencer = async (
+  InfluencerData: NewInfluencerData,
+  token: string
+) => {
+  return api.post(`/influencers`, InfluencerData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
 export const editInfluencer = async (
   id: string,
-  InfluencerData: Partial<NewInfluencerData>
+  InfluencerData: Partial<NewInfluencerData>,
+  token: string
 ) => {
-  return api.put(`/influencers/${id}`, InfluencerData);
+  return api.put(`/influencers/${id}`, InfluencerData, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
-export const deleteInfluencerById = async (id: string) => {
-  return await api.delete(`/influencers/${id}`);
+export const deleteInfluencerById = async (id: string, token: string) => {
+  return await api.delete(`/influencers/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 };
 //////////////////////////////    Auth Routes   //////////////////////////////
 
@@ -54,5 +71,14 @@ export const getUser = async (id: number, token: string) => {
 };
 
 //////////////////////////////    Categories Routes   //////////////////////////////
-
+export const getAllBrands = async (token: string) => {
+  return await api.get(`/brands`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
 //////////////////////////////    Brands Routes   //////////////////////////////
+
+//////////////////////////////    CEP Routes   //////////////////////////////
+export const getCepInformation = (cep: string) => {
+  return axios.get(`https://viacep.com.br/ws/${cep}/json/`);
+};

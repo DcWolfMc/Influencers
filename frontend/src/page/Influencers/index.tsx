@@ -15,6 +15,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useInfluencer } from "@/context/InfluencersContext";
 import { formatNumber } from "@/util/formatter";
+import { ModalForm } from "@/components/ModalForm";
 
 export const Influencers = () => {
   const {fetchInfluencers, influencers, setSelectedInfluencer, influencersData} = useInfluencer()
@@ -53,7 +54,12 @@ export const Influencers = () => {
   }, [currentPage, currentLimit, loading]);
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
-      <section></section>
+      <section className="w-full flex flex-row justify-between items-center">
+        <div className="flex flex-row gap-4">
+          filtros
+        </div>
+        <ModalForm/>
+      </section>
       <Table className="max-w-[960px]">
         <TableHeader>
           <TableRow className="border-orange-500">
