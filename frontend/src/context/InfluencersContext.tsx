@@ -1,10 +1,4 @@
-import React, {
-  createContext,
-  useState,
-  useContext,
-  ReactNode,
-  useEffect,
-} from "react";
+import React, { createContext, useState, useContext, ReactNode } from "react";
 import {
   GetAllInfluencersData,
   InfluencerData,
@@ -38,7 +32,7 @@ interface InfluencerProviderProps {
 export const InfluencerProvider: React.FC<InfluencerProviderProps> = ({
   children,
 }) => {
-  const { logout } = useAuth();
+  const { logout, accessToken } = useAuth();
   const [influencers, setInfluencers] = useState<InfluencerData[]>([]);
   const [selectedInfluencer, setSelectedInfluencer] =
     useState<InfluencerData | null>(null);
@@ -64,7 +58,7 @@ export const InfluencerProvider: React.FC<InfluencerProviderProps> = ({
 
   const fetchInfluencerById = async (id: string) => {
     try {
-      const response = await getInfluencerById(id);
+      const response = await getInfluencerById(id, accessToken!);
       setSelectedInfluencer(response.data);
     } catch (error) {
       console.error("Failed to fetch influencers:", error);
