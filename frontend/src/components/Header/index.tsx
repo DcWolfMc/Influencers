@@ -6,7 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CaretDown, CaretUp, User } from "phosphor-react";
+import { CaretDown, User } from "phosphor-react";
 import { useAuth } from "@/context/AuthContext";
 import useWindowDimensions from "@/util/getWindowDimensions";
 
