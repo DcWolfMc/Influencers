@@ -115,7 +115,7 @@ $ npm run dev
   - [x] `All exceptions filter`: Sistema de gerenciamento de exceptions generalizado vinculado com modulo de log. 
   - [x] `Logger Module`: Modulo de gereção e exibição de logs que pode ser exportado para arquivos .csv
   - [x] `ThrottlerModule`: Sistema de throttler para evitar inúmeras requisições em perídos vistos como curtos (1 segundos ) e longos ( 1 minuto ).
-  - [x] `Logout`: Dockerização 
+  - [x] `Docker`: Dockerização 
 - Frontend
   - [x] `Auth Context`: Controle da autenticação via fontend.
   - [x] `Influencers Context`: Controle da influenciadores via fontend.
@@ -130,7 +130,7 @@ $ npm run dev
   - [x] `Cadastro de usuários`: Cadastro de usuários administradores.*
   - [x] `Login`: Sistema de Login
   - [x] `Logout`: Sistema de Logout
-  - [x] `Logout`: Dockerização 
+  - [x] `Docker`: Dockerização 
  
 - Outros
   - [x] `Workflow para repositório remoto`: 
