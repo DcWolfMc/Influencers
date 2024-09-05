@@ -28,7 +28,7 @@ export const Login = () => {
     try {
       await login(email, password).then(() => {
         toast.success("Bem vindo");
-        navigate('/influencers')
+        navigate("/influencers");
       }); // Simulate form submission
       // Implement your submission logic here (e.g., API call)
     } catch (error) {
@@ -55,7 +55,7 @@ export const Login = () => {
         {formError && formError !== "" && (
           <p className="text-red-500 min-h-6">{formError}</p>
         )}
-        {errors.password&& (
+        {errors.password && (
           <p className="text-red-500 min-h-6">{errors.password.message}</p>
         )}
         <label htmlFor="email" className="flex flex-col gap-2 max-w-[416px]">
@@ -67,6 +67,7 @@ export const Login = () => {
                 value: 50,
                 message: "O campo deve ter no máximo 50 caracteres",
               },
+              
               pattern: {
                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                 message: "Por favor, insira um e-mail válido",
@@ -75,6 +76,7 @@ export const Login = () => {
             id="email"
             className="p-2 rounded-md w-[416px] bg-slate-800 text-slate-100 border-2 border-transparent"
             type="email"
+            maxLength={50}
             placeholder="Digite seu E-mail"
           />
         </label>
@@ -87,6 +89,10 @@ export const Login = () => {
                 value: 6,
                 message: "A senha deve ter pelo menos 6 caracteres",
               },
+              maxLength: {
+                value: 20,
+                message: "A senha deve ter no máximo 20 caracteres",
+              },
               pattern: {
                 value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
                 message:
@@ -97,6 +103,7 @@ export const Login = () => {
             className="p-2 rounded-md w-[416px] bg-slate-800 text-slate-100 border-2 border-transparent"
             type="password"
             placeholder="Digite sua Senha"
+            maxLength={20}
           />
           <Link
             to={""}

@@ -77,6 +77,7 @@ export const SignUp = () => {
             className="p-2 rounded-md w-[416px] bg-slate-800 text-slate-100 border-2 border-transparent"
             type="email"
             placeholder="Digite seu E-mail"
+            maxLength={45}
           />
           {errors.email && (
             <p className="text-red-500">{errors.email.message}</p>
@@ -94,6 +95,10 @@ export const SignUp = () => {
                 value: 6,
                 message: "A senha deve ter pelo menos 6 caracteres",
               },
+              maxLength: {
+                value: 20,
+                message: "A senha deve ter no máximo 20 caracteres",
+              },
               pattern: {
                 value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/,
                 message:
@@ -104,6 +109,7 @@ export const SignUp = () => {
             className="p-2 rounded-md w-[416px] bg-slate-800 text-slate-100 border-2 border-transparent"
             type="password"
             placeholder="Digite sua Senha"
+            maxLength={20}
           />
           {errors.password && (
             <p className="text-red-500">{errors.password.message}</p>

@@ -250,12 +250,12 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
                         event.target.value = lowerCase.toLowerCase();
                       },
                       required: { value: true, message: "*Campo obrigatório" },
-                      maxLength: 20,
+                      maxLength: 25,
                     })}
                     id="instagram_name"
                     className="p-2 rounded-md w-[368px] bg-slate-800 text-slate-100 border-2 border-slate-500"
                     type="text"
-                    maxLength={20}
+                    maxLength={25}
                     placeholder="Nome do Instagram do Influenciador"
                   />
                   {errors.instagram_name && (
@@ -276,7 +276,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
                           value: true,
                           message: "*Campo obrigatório",
                         },
-                        maxLength: 50,
+                        maxLength: 20,
                       })}
                       id="seguidores"
                       className="p-2 rounded-md bg-slate-800 text-slate-100 border-2 border-slate-500"
@@ -299,7 +299,7 @@ export const ModalForm: FunctionComponent<ModalFormProps> = ({
                           value: true,
                           message: "*Campo obrigatório",
                         },
-                        maxLength: 50,
+                        maxLength: 20,
                       })}
                       id="following"
                       className="p-2 rounded-md bg-slate-800 text-slate-100 border-2 border-slate-500"
