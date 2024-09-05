@@ -146,14 +146,14 @@ $ npm run dev
  - [ ] Hospedágem na AWS
  - [ ] Uso de Bucket para armazenamento e consumo de imagens
  - [ ] Implementações de Teste de frontend
- - [ ] Responsividade
+ - [ ] Responsividade*
  - [ ] Sistema de níveis para Influenciadores ( por tamanho de alcance ou interação )
  - [ ] Sistema de hierarquia para usuários 'admin' ( 'escritor', 'leitor', 'admin', etc )
  - [ ] Design mais elaborado para o site.
  - [ ] uso de PWA para a aplicação ser híbrida.
  - [ ] Dark / Light Theme
 
-
+**(*)** - A responsividade que tem, até exibida no screenshot mobile, foi algo simples que não é tão efetivo em diversos dispositivos, necessitando de melhorias.
 ## Screenshots
 <p width="100%">
   <img src="./.github/assets/mobile1.png" alt="screenshot1" width="40%" hspace="32"/>
