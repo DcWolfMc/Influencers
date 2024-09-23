@@ -89,19 +89,17 @@ $ npm run dev
 
 | Backend                      | Frontend                      |
 |------------------------------|-------------------------------|
-| Next.js API Routes           | React.js                      |
-| mongoose                     | Next.js                       |
-| react-email                  | Chakra-UI                     |
-| nodemailer                   | next-auth                     |
-| Zod                          | axios                         |
-| Typescript                   | next-pwa                      |
-| bcryptjs                     | swiper                        |
-|                              | Phosphor Icons React          |
-|                              | ContextAPI                    |
-|                              | Yup                           |
-|                              | react-hook-form               |
-|                              | react-toastify                |
-|                              | streamifier                   |
+| Nest.js                      | React.js                      |
+| Prisma                       | Tailwind                      |
+| SQLite                       | Vite                          |
+| passport                     | Shadcn UI                     |
+| jwt                          | Radix UI                      |
+| Algoritmo RSA 256            | Phosphor Icons React          |
+| Typescript                   | ContextAPI                    |
+| DTOs                         | react-router-dom-v6           |
+| zod                          | react-hook-form               |
+| bcryptjs                     | react-toastify                |
+| throttler                    | Typescript                    |
 
 
 **OBS** Optei por utilizar Next.js no projeto mas decidi por não por falta de tempo para estruturar páginas e visualizar como o código seria hidratado.
